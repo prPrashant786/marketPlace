@@ -1,4 +1,4 @@
-import { StyleSheet,View, Text, TextInput, TouchableOpacity,Image, Alert, ActivityIndicator } from 'react-native'
+import { StyleSheet,View, Text, TextInput, TouchableOpacity,Image, Alert, ActivityIndicator, KeyboardAvoidingView , ScrollView} from 'react-native'
 import React, { useEffect, useState } from 'react'
 import {app} from "../../firebaseConfig"
 import { getFirestore,collection, getDocs, addDoc } from "firebase/firestore";
@@ -69,6 +69,7 @@ export default function AddpostScreen() {
         value.userName = user.fullName;
         value.userEmail = user.primaryEmailAddress.emailAddress;
         value.userProfileImage = user.imageUrl;
+        value.createdAt = Date.now().toString();
         const docRef = await addDoc(collection(db,"UserPost"),value)
         if(docRef.id){
           setLoading(false)
@@ -80,80 +81,82 @@ export default function AddpostScreen() {
   }
 
   return (
-    <View className='p-10'>
-    <Text className='text-[28px] font-extrabold'>Add Post</Text>
-    <Text className='text-[15px] text-grey-500 mb-5'>Create New Post and Start Selling</Text>
-      <Formik
-      initialValues={{ title: '', desc: '',category:'',address:'',price:'',image:'',userName:'',userEmail:'',userProfileImage:'' }}
-      onSubmit={value=>onSubmitMethod(value)}
-      >
-      {({values,handleChange,handleBlur,handleSubmit,setFieldValue}) => (
-          <View>
-              <TouchableOpacity onPress={pickImage}>
-              {image?
-              <Image source={{uri:image}} 
-              style={{width:100,height:100,borderRadius:15,objectFit:'fill'}}/>
-              :
-              <Image source={require("../../assets/images/placeholder.png")}
-              style={{width:100,height:100,borderRadius:15,objectFit:'fill'}}/>
-              }
-              </TouchableOpacity>
-              <TextInput
-                style={styles.input}
-                placeholder='Title'
-                value={values?.title}
-                onChangeText={handleChange('title')}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder='Descreption'
-                value={values?.desc}
-                numberOfLines={5}
-                onChangeText={handleChange('desc')}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder='Price'
-                value={values?.price}
-                keyboardType='number-pad'
-                onChangeText={handleChange('price')}
-              />
-              <TextInput
-                style={styles.input}
-                placeholder='Address'
-                value={values?.address}
-                onChangeText={handleChange('address')}
-              />
-              <View style={{borderWidth:1,borderRadius:10,marginTop:15}}>             
-              <Picker
-              selectedValue={values?.category}
-              onValueChange={itemvalue=>setFieldValue('category',itemvalue)}
-              >
+    <KeyboardAvoidingView>
+      <ScrollView className='p-10'>
+      <Text className='text-[28px] font-extrabold'>Add Post</Text>
+      <Text className='text-[15px] text-grey-500 mb-5'>Create New Post and Start Selling</Text>
+        <Formik
+        initialValues={{ title: '', desc: '',category:'',address:'',price:'',image:'',userName:'',userEmail:'',userProfileImage:'',createdAt:''}}
+        onSubmit={value=>onSubmitMethod(value)}
+        >
+        {({values,handleChange,handleBlur,handleSubmit,setFieldValue}) => (
+            <View>
+                <TouchableOpacity onPress={pickImage}>
+                {image?
+                <Image source={{uri:image}} 
+                style={{width:100,height:100,borderRadius:15,objectFit:'fill'}}/>
+                :
+                <Image source={require("../../assets/images/placeholder.png")}
+                style={{width:100,height:100,borderRadius:15,objectFit:'fill'}}/>
+                }
+                </TouchableOpacity>
+                <TextInput
+                  style={styles.input}
+                  placeholder='Title'
+                  value={values?.title}
+                  onChangeText={handleChange('title')}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder='Descreption'
+                  value={values?.desc}
+                  numberOfLines={5}
+                  onChangeText={handleChange('desc')}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder='Price'
+                  value={values?.price}
+                  keyboardType='number-pad'
+                  onChangeText={handleChange('price')}
+                />
+                <TextInput
+                  style={styles.input}
+                  placeholder='Address'
+                  value={values?.address}
+                  onChangeText={handleChange('address')}
+                />
+                <View style={{borderWidth:1,borderRadius:10,marginTop:15}}>             
+                <Picker
+                selectedValue={values?.category}
+                onValueChange={itemvalue=>setFieldValue('category',itemvalue)}
+                >
 
-              {categoryList&&categoryList.map((item,index)=>(
-                item&&<Picker.Item key={index} label={item?.Name} value={item?.Name} />
-              ))}
-              </Picker>
-              </View>
- 
-              <TouchableOpacity onPress={handleSubmit} 
-              style={{
-                backgroundColor:loading?'#ccc':'#007BFF',
-              }}
-              className='mt-4 bg-blue-500 p-4 rounded-full'
-              disabled={loading}
-              >
-              { loading?
-              <ActivityIndicator color={'#fff'}/>
-              :
-              <Text className='text-center text-white text-[16px]'>Submit</Text>
-              }
-              
-              </TouchableOpacity>
-          </View>
-      )}
-      </Formik>
-    </View>
+                {categoryList&&categoryList.map((item,index)=>(
+                  item&&<Picker.Item key={index} label={item?.Name} value={item?.Name} />
+                ))}
+                </Picker>
+                </View>
+  
+                <TouchableOpacity onPress={handleSubmit} 
+                style={{
+                  backgroundColor:loading?'#ccc':'#007BFF',
+                }}
+                className='mt-4 bg-blue-500 p-4 rounded-full'
+                disabled={loading}
+                >
+                { loading?
+                <ActivityIndicator color={'#fff'}/>
+                :
+                <Text className='text-center text-white text-[16px]'>Submit</Text>
+                }
+                
+                </TouchableOpacity>
+            </View>
+        )}
+        </Formik>
+      </ScrollView>
+    </KeyboardAvoidingView>
   )
 }
 
