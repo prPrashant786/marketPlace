@@ -11,7 +11,7 @@ export default function Slider({sliderList}) {
             <View className=''>
                 <Image 
                     source={{uri:item?.image}}
-                    className='m-2 h-[200px] w-[300px] object-fill'
+                    className='m-1 h-[200px] w-[300px] object-fill'
                 />
             </View>
         )}

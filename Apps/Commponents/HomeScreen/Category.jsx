@@ -1,7 +1,9 @@
 import { View, Text, FlatList, Image,TouchableOpacity} from 'react-native'
 import React from 'react'
+import { useNavigation } from '@react-navigation/native'
 
 export default function Category({categoryList}) {
+  const navigation = useNavigation()
   return (
     <View>
       <Text className='p-0 text-[20px] font-bold'>Categories</Text>
@@ -9,7 +11,11 @@ export default function Category({categoryList}) {
         data={categoryList}
         numColumns={4}
         renderItem={({item,index})=>(
-          <TouchableOpacity className='flex-1 items-center justify-center border-[1px] p-1 border-blue-300 m-1
+          <TouchableOpacity 
+          onPress={()=>navigation.navigate('Item-List',{
+            category:item.Name
+          })}
+          className='flex-1 items-center justify-center border-[1px] p-1 border-blue-300 m-1
           h-[80px] rounded-lg bg-blue-50'>
             <Image 
                 source={{uri:item?.Icon}}

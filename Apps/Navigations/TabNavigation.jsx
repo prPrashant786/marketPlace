@@ -6,6 +6,7 @@ import Explorescreen from '../Screens/ExploreScreen';
 import AddpostScreen from '../Screens/AddpostScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import { Ionicons } from '@expo/vector-icons';
+import HomeTabStackNavigation from './HomeTabStackNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -14,7 +15,7 @@ export default function TabNavigation() {
     <Tab.Navigator screenOptions={{
         headerShown:false
     }}>
-        <Tab.Screen name='home' component={Homescreen}
+        <Tab.Screen name='home-stack' component={HomeTabStackNavigation}
             options={{
                 tabBarLabel : ({color}) => (
                     <Text className='text-12' style={{marginBottom:3,color:color}}>Home</Text>
