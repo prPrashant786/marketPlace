@@ -7,6 +7,8 @@ import AddpostScreen from '../Screens/AddpostScreen';
 import ProfileScreen from '../Screens/ProfileScreen';
 import { Ionicons } from '@expo/vector-icons';
 import HomeTabStackNavigation from './HomeTabStackNavigation';
+import ExploreStackNaviation from './ExploreStackNaviation';
+import ProfileScreenStackNavigation from './ProfileScreenStackNavigation';
 
 const Tab = createBottomTabNavigator();
 
@@ -25,7 +27,7 @@ export default function TabNavigation() {
                 )
             }}
         />
-        <Tab.Screen name='explore' component={Explorescreen}
+        <Tab.Screen name='explore' component={ExploreStackNaviation}
             options={{
                 tabBarLabel : ({color}) => (
                     <Text className='text-12' style={{marginBottom:3,color:color}}>Explore</Text>
@@ -45,7 +47,7 @@ export default function TabNavigation() {
                 )
             }}
         />
-        <Tab.Screen name='profile' component={ProfileScreen}
+        <Tab.Screen name='profile' component={ProfileScreenStackNavigation}
             options={{
                 tabBarLabel : ({color}) => (
                     <Text className='text-12' style={{marginBottom:3,color:color}}>Profile</Text>
